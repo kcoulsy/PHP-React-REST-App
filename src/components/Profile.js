@@ -1,44 +1,33 @@
 import React from 'react';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 
 import Header from './Header';
-
+import {getUserById, deleteUserById} from '../actions/user';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      data: {}
-    }
-    this.deleteUser = this.deleteUser.bind(this);
+    this.state = { data: {} }
+    this.handleDeleteUser = this.handleDeleteUser.bind(this);
   }
+
   componentWillMount() {
     const id = this.props.match.params.id;
-    const url = 'http://localhost/api/public/api/user/' + id;
-    axios({
-      method: 'get',
-      url,
-      data: {}
-    }).then((response)=>{
-      if(response.status === 200) {
-        this.setState(()=>({data: response.data[0]}));
-      }
+    getUserById(id).then((response)=>{
+      this.setState(()=>({data: response}))
     })
   }
-  deleteUser(){
-    const url = 'http://localhost/api/public/api/user/delete/' + this.props.match.params.id;
-    axios({
-      method: 'delete',
-      url,
-      data: {}
-    }).then((response)=>{
-      if(response.status === 200) {
-        this.setState(()=>({data: response.data}));
-        this.props.history.push("/");
-      }
-    });
+
+  handleDeleteUser(){
+    if(window.confirm('Are you sure you want to delete this user?')){
+      const id = this.props.match.params.id;
+      deleteUserById(id).then((response)=>{
+        if(response === 200){
+          this.props.history.push('/');
+        }
+      })
+    } 
   }
+
   render() {
     return (
       <div>
@@ -51,7 +40,7 @@ class Profile extends React.Component {
         {this.state.data.type}<br />
         {this.state.data.enabled}<br />
       <Link to={"/edit/"+this.state.data.id}>Edit User</Link>
-      <button onClick={this.deleteUser}>Delete</button>
+      <button onClick={this.handleDeleteUser}>Delete</button>
       </div>
     </div>
     )

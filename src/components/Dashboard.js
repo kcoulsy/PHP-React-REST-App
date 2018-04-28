@@ -1,28 +1,33 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
+import Pagination from "react-js-pagination";
 
 import Header from './Header';
-import Form from './Form';
+
+import {getAllUsers, getUsersByOffset} from '../actions/user';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      data: []
-    }
+      data: [],
+      activePage: 1
+   }
+   this.handlePageChange = this.handlePageChange.bind(this);
   }
+
   componentWillMount() {
-    axios({
-      method: 'get',
-      url: 'http://localhost/api/public/api/users',
-      data: {}
-    }).then((response)=>{
-      if(response.status === 200) {
-        this.setState(()=>({data: response.data}));
-      }
+    this.handleGetUsers(0);
+  }
+  handleGetUsers(offset){
+    getUsersByOffset(offset).then((response)=>{
+      this.setState(()=>({data: response}));
     })
+  }
+  handlePageChange(pageNumber) {
+    this.setState(()=>({activePage: pageNumber}));
+    this.handleGetUsers((pageNumber - 1 ) * 10);
+
   }
   render() {
     return (
@@ -39,12 +44,21 @@ class Dashboard extends React.Component {
               </Link>
             )
           })}
-        </div></div>
+        </div>
+        <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={10}
+          totalItemsCount={25}
+          pageRangeDisplayed={5}
+          onChange={this.handlePageChange}
+          innerClass="pagination"
+          itemClass="page-item"
+        />
+      </div>
 
       </div>
     )
   }
 }
-
 
 export default Dashboard;

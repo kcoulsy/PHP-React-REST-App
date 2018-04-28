@@ -39,9 +39,27 @@ Added a delete button on profile pages - Todo: add confirmation
 Removed debugging console.logs
 Added a header component
 
+Todo:
 Fix urls - currently fetching from a different port on localhost
 Look into the REST api, potential sql injection problem.
 Fix react routing problem
 Add react validation on the form.
 Add php validation
 Add Delete confirmation
+Add init page
+Add pagination
+
+v0.6
+Pulled the React CRUD Operations out into their own actions file, should be easier to fix url later
+Added some form validation - If possible look into tidying this up.
+Added pagination (basic)
+Added delete confirmation
+
+Todo:
+Fix urls - currently fetching from a different port on localhost
+Look into the REST api, potential sql injection problem.
+Fix react routing problem
+Could take react validation further
+Add php validation
+Add init page
+Add some styling

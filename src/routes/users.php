@@ -24,6 +24,25 @@ $app->get('/api/users', function(Request $request, Response $response){
 });
 
 //-----------------------------------------------------
+// GET all Users
+//-----------------------------------------------------
+$app->get('/api/users/{offset}', function(Request $request, Response $response){
+  $offset = $request->getAttribute('offset');
+  $sql = "SELECT * FROM users LIMIT 10 OFFSET $offset";
+  try {
+    $db = new db();
+    //connect
+    $db = $db->connect();
+    $stmt = $db->query($sql);
+    $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    echo json_encode($users);
+
+  } catch(PDOException $e) {
+    echo '{"error":{"text":' . $e->getMessage() . '}}';
+  }
+});
+//-----------------------------------------------------
 // GET a User given an ID
 //-----------------------------------------------------
 $app->get('/api/user/{id}', function(Request $request, Response $response){

@@ -1,5 +1,7 @@
 import React from 'react';
+import validator from 'validator';
 
+import {checkUserByUsername} from '../actions/user';
 
 class Form extends React.Component {
   constructor(props){
@@ -11,7 +13,8 @@ class Form extends React.Component {
       last_name: this.props.userData.last_name ? this.props.userData.last_name: '',
       email: this.props.userData.email ? this.props.userData.email: '',
       type: this.props.userData.type ? this.props.userData.type: 'student',
-      enabled: this.props.userData.enabled === "1" ? true : false
+      enabled: this.props.userData.enabled === "1" ? true : false,
+      error: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,14 +43,30 @@ class Form extends React.Component {
       type,
       enabled: enabled ? "1" : "0"
     }
-
-    this.props.onSubmit(user);
-
+    //Validate the form and submit the data, Look into tidying this up
+    if(validator.isLength(first_name, {min:1, max :25}) &&
+      validator.isLength(last_name, {min:1, max :25}) &&
+      validator.isAlpha(first_name) &&
+      validator.isAlpha(last_name)){
+        if(validator.isLength(username, {min:3, max :10}) &&
+          validator.isAlphanumeric(username)){
+            if(validator.isEmail(email)){
+                  this.props.onSubmit(user);
+            } else {
+              this.setState({error: 'Please use a valid email'});
+            }
+        } else {
+          this.setState({error: 'Please pick a valid username between 3 and 10 characters'});
+        }
+      } else {
+        this.setState({error: 'Please enter a valid name'});
+      }
   }
 
   render() {
     return (
       <div>
+        {this.state.error}
         <form onSubmit={this.handleSubmit}>
           <label>Userame</label>
           <input type="text"

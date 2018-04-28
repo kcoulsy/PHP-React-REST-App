@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
+import Header from './Header';
 import Form from './Form';
 
 class EditProfile extends React.Component {
@@ -22,19 +23,31 @@ class EditProfile extends React.Component {
     })
   }
 
-  addUser(user) {
-    console.log('edit user',user);
+  editUser(user) {
+    const url = 'http://localhost/api/public/api/user/update/' + user.id;
+    axios({
+      method: 'put',
+      url,
+      data: user
+    }).then((response)=>{
+      if(response.status === 200) {
+        this.setState(()=>({data: response.data}));
+        this.props.history.push("/");
+      }
+    });
   }
-  
+
   render() {
     return (
+      <div>
+      <Header />
       <div className="container">
-        EditProfile
+        <h2>Edit Profile</h2>
         {this.state.data ? <Form userData={this.state.data} onSubmit={(user)=>{
-          this.addUser(user);
+          this.editUser(user);
         }}/> : 'Loading Form'}
 
-      </div>
+      </div></div>
     )
   }
 }

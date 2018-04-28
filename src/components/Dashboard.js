@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
+import Header from './Header';
 import Form from './Form';
 
 class Dashboard extends React.Component {
@@ -20,24 +21,25 @@ class Dashboard extends React.Component {
     }).then((response)=>{
       if(response.status === 200) {
         this.setState(()=>({data: response.data}));
-        console.log(this.state.data);
       }
     })
   }
   render() {
     return (
+      <div>
+      <Header />
       <div className="container">
-        <Link to="/add">Add User</Link>
-        Dashboard
+        <h2>Dashboard</h2>
+
         <div>
           {this.state.data.map((user)=>{
             return (
-              <Link to={"/profile/" + user.id}>
+              <Link to={"/profile/" + user.id} key={user.id}>
                 <div>{user.username} - {user.first_name} {user.last_name}</div>
               </Link>
             )
           })}
-        </div>
+        </div></div>
 
       </div>
     )

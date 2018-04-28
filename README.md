@@ -1,3 +1,5 @@
+Changelog:
+
 v0.1
 
 Initial bulk of the REST Api setup in PHP using the Slim PHP framework.
@@ -20,3 +22,26 @@ Todo:
 Fix urls - currently fetching from a different port on localhost
 Add the delete functionality
 Look into the REST api, potential sql injection problem.
+
+v0.4
+
+Todo:
+Fix react routing problem
+Add react validation on the form.
+Add php validation
+
+Notes:
+Select on form is Case sensitive
+
+v0.5
+Added functionality to add and edit profile pages
+Added a delete button on profile pages - Todo: add confirmation
+Removed debugging console.logs
+Added a header component
+
+Fix urls - currently fetching from a different port on localhost
+Look into the REST api, potential sql injection problem.
+Fix react routing problem
+Add react validation on the form.
+Add php validation
+Add Delete confirmation

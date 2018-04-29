@@ -34,9 +34,7 @@ class Dashboard extends React.Component {
       <div>
       <Header />
       <div className="container">
-        <h2>Dashboard</h2>
-
-        <div>
+        <div className="">
           {this.state.data.map((user)=>{
             return (
               <Link to={"/profile/" + user.id} key={user.id}>

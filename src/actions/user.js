@@ -1,14 +1,17 @@
 import axios from 'axios';
+import {root} from '../config/config';
 
-const apiUrl = 'http://localhost/api/public/api/';
+export const apiUrl = root;
 
 export const addUser = (user) => {
+  console.log('adding user', user)
   const url = apiUrl + 'user/add';
   return axios({
     method: 'post',
     url,
     data: user
   }).then((response)=>{
+    console.log(response);
     if(response.status === 200) {
       return response.status;
     }

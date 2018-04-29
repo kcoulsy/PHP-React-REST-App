@@ -5,9 +5,33 @@ use \Psr\Http\Message\ResponseInterface as Response;
 $app = new \Slim\App;
 
 //-----------------------------------------------------
+//Setup tables
+//-----------------------------------------------------
+$app->get('/init', function(Request $request, Response $response){
+$sql = 'CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(255) NOT NULL ,
+  `first_name` VARCHAR(255) NOT NULL ,
+  `last_name` VARCHAR(255) NOT NULL ,
+  `email` VARCHAR(255) NOT NULL ,
+  `type` VARCHAR(255) NOT NULL ,
+  `enabled` BIT NOT NULL ,
+  PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+  try {
+    $db = new db();
+    //connect
+    $db = $db->connect();
+    $stmt = $db->query($sql);
+    $db = null;
+    echo '{"notice": {"text": "Table Created"}}';
+  } catch(PDOException $e) {
+    echo '{"error":{"text":' . $e->getMessage() . '}}';
+  }
+});
+//-----------------------------------------------------
 // GET all Users
 //-----------------------------------------------------
-$app->get('/api/users', function(Request $request, Response $response){
+$app->get('/users', function(Request $request, Response $response){
   $sql = "SELECT * FROM users";
   try {
     $db = new db();
@@ -26,7 +50,7 @@ $app->get('/api/users', function(Request $request, Response $response){
 //-----------------------------------------------------
 // GET all Users
 //-----------------------------------------------------
-$app->get('/api/users/{offset}', function(Request $request, Response $response){
+$app->get('/users/{offset}', function(Request $request, Response $response){
   $offset = $request->getAttribute('offset');
   $sql = "SELECT * FROM users LIMIT 10 OFFSET $offset";
   try {
@@ -45,7 +69,7 @@ $app->get('/api/users/{offset}', function(Request $request, Response $response){
 //-----------------------------------------------------
 // GET a User given an ID
 //-----------------------------------------------------
-$app->get('/api/user/{id}', function(Request $request, Response $response){
+$app->get('/user/{id}', function(Request $request, Response $response){
   $id = $request->getAttribute('id');
 
   $sql = "SELECT * FROM users WHERE id = $id";
@@ -66,7 +90,7 @@ $app->get('/api/user/{id}', function(Request $request, Response $response){
 //-----------------------------------------------------
 // POST a new User
 //-----------------------------------------------------
-$app->post('/api/user/add', function(Request $request, Response $response){
+$app->post('/user/add', function(Request $request, Response $response){
   $username = $request->getParam('username');
   $first_name = $request->getParam('first_name');
   $last_name = $request->getParam('last_name');
@@ -103,7 +127,7 @@ $app->post('/api/user/add', function(Request $request, Response $response){
 //-----------------------------------------------------
 // UPDATE a User given an ID
 //-----------------------------------------------------
-$app->put('/api/user/update/{id}', function(Request $request, Response $response){
+$app->put('/user/update/{id}', function(Request $request, Response $response){
   $id = $request->getAttribute('id');
   $username = $request->getParam('username');
   $first_name = $request->getParam('first_name');
@@ -147,7 +171,7 @@ $app->put('/api/user/update/{id}', function(Request $request, Response $response
 //-----------------------------------------------------
 // DELETE a User given an ID
 //-----------------------------------------------------
-$app->delete('/api/user/delete/{id}', function(Request $request, Response $response){
+$app->delete('/user/delete/{id}', function(Request $request, Response $response){
   $id = $request->getAttribute('id');
 
   $sql = "DELETE FROM users WHERE id = $id";

@@ -3,7 +3,8 @@
 Requires an Apache server as well as a MySQL Server. I suggest Xampp as that's what was used for development
 Extract all files into the htdocs folder on an apache server
 With a MySql server running, head to http://localhost/phpmyadmin and create a new database called 'API'
-Then run the following SQL query
+
+Then go to http://localhost/init and it should create the users table. Alternatively run the following SQL query
 
 'CREATE TABLE IF NOT EXISTS `users` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,

@@ -41,8 +41,8 @@ class AddProfile extends React.Component {
       <Header />
       <div className="container">
         <h2>Initialization</h2>
-        <button onClick={this.handleCreateTable}>Create mysql table</button><br />
-        <button onClick={this.handleAddUsers}>Add 10 Users to the database</button>
+        <button className="btn btn-info" onClick={this.handleCreateTable}>Create mysql table</button><br />
+        <button className="btn btn-info" onClick={this.handleAddUsers}>Add 10 Users to the database</button>
       </div></div>
     )
   }

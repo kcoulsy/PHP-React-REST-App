@@ -25,24 +25,46 @@ class Profile extends React.Component {
           this.props.history.push('/');
         }
       })
-    } 
+    }
   }
 
   render() {
     return (
       <div>
       <Header />
-      <div className="container">
+
+      <div class="container">
         <h2>{this.state.data.username}</h2>
-        {this.state.data.first_name}<br />
-        {this.state.data.last_name}<br />
-        {this.state.data.email}<br />
-        {this.state.data.type}<br />
-        {this.state.data.enabled}<br />
-      <Link to={"/edit/"+this.state.data.id}>Edit User</Link>
-      <button onClick={this.handleDeleteUser}>Delete</button>
+      <div className="profile">
+        <table className="table">
+          <tbody>
+            <tr>
+              <td>First Name</td>
+              <td>{this.state.data.first_name}</td>
+            </tr>
+            <tr>
+              <td>Last Name</td>
+              <td>{this.state.data.last_name}</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td>{this.state.data.email}</td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>{this.state.data.type}</td>
+            </tr>
+            <tr>
+              <td>Enabled</td>
+              <td>{this.state.data.enabled}</td>
+            </tr>
+          </tbody>
+        </table>
+      <Link className="btn btn-info" to={"/edit/"+this.state.data.id}>Edit User</Link>
+      <button className="btn btn-danger"onClick={this.handleDeleteUser}>Delete</button>
       </div>
-    </div>
+      </div>
+      </div>
     )
   }
 }

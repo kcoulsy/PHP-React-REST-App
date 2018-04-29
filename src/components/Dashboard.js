@@ -34,15 +34,42 @@ class Dashboard extends React.Component {
       <div>
       <Header />
       <div className="container">
-        <div className="">
+        <h2>User List</h2>
+        <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Username</th>
+              <th scope="col">First</th>
+              <th scope="col">Last</th>
+              <th scope="col">Email</th>
+              <th scope="col">Type</th>
+              <th scope="col">Enabled</th>
+            </tr>
+          </thead>
+          <tbody>
           {this.state.data.map((user)=>{
             return (
-              <Link to={"/profile/" + user.id} key={user.id}>
-                <div>{user.username} - {user.first_name} {user.last_name}</div>
-              </Link>
+
+              <tr>
+
+                <th scope="row"><Link to={"/profile/" + user.id} key={user.id}>{user.id}</Link></th>
+                <td>{user.username}</td>
+                <td>{user.first_name}</td>
+                <td>{user.last_name}</td>
+                <td>{user.email}</td>
+                <td>{user.type}</td>
+                <td>{user.enabled}</td>
+
+              </tr>
+
             )
           })}
-        </div>
+          </tbody>
+
+      </table>
+      </div>
         <Pagination
           activePage={this.state.activePage}
           itemsCountPerPage={10}

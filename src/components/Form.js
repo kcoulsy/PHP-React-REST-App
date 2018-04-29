@@ -7,7 +7,7 @@ class Form extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      id: this.props.userData ? this.props.userData : '',
+      id: this.props.userData ? this.props.userData.id : '',
       username: this.props.userData.username ? this.props.userData.username: '',
       first_name: this.props.userData.first_name ? this.props.userData.first_name: '',
       last_name: this.props.userData.last_name ? this.props.userData.last_name: '',
@@ -64,52 +64,75 @@ class Form extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.state.error}
-        <form onSubmit={this.handleSubmit}>
-          <label>Userame</label>
-          <input type="text"
-            id="username"
-            value={this.state.username}
-            onChange={this.handleChange}/>
-          <br />
-          <label>First Name</label>
-          <input type="text"
-            id="first_name"
-            value={this.state.first_name}
-            onChange={this.handleChange}/>
-          <br />
-          <label>Last Name</label>
-          <input type="text"
-            id="last_name"
-            value={this.state.last_name}
-            onChange={this.handleChange}/>
-          <br />
-          <label>Email</label>
-          <input type="text"
-            id="email"
-            value={this.state.email}
-            onChange={this.handleChange}/>
-          <br />
-          <label>Profile Type</label>
-          <select id="type"
-            value={this.state.type}
-            onChange={this.handleChange}>
-              <option value="Student">Student</option>
-              <option value="Parent">Parent</option>
-              <option value="Staff">Staff</option>
-              <option value="Admin">Admin</option>
-          </select>
-          <br />
-          <label>Enabled</label>
-          <input
-            id="enabled"
-            type="checkbox"
-            checked={this.state.enabled}
-            onChange={this.handleChange}
-            />
-          <button>Save</button>
+    return (        
+        <div className="profile">
+          {this.state.error}
+          <form onSubmit={this.handleSubmit}>
+          <table className="table">
+            <tbody>
+              <tr>
+                <td>Username</td>
+                <td>
+                  <input type="text"
+                    id="username"
+                    value={this.state.username}
+                    onChange={this.handleChange}/>
+                </td>
+              </tr>
+              <tr>
+                <td>First Name</td>
+                <td>
+                  <input type="text"
+                    id="first_name"
+                    value={this.state.first_name}
+                    onChange={this.handleChange}/>
+                </td>
+              </tr>
+              <tr>
+                <td>Last Name</td>
+                <td>
+                  <input type="text"
+                    id="last_name"
+                    value={this.state.last_name}
+                    onChange={this.handleChange}/>
+                </td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td>
+                  <input type="text"
+                    id="email"
+                    value={this.state.email}
+                    onChange={this.handleChange}/>
+                </td>
+              </tr>
+              <tr>
+                <td>Account Type</td>
+                <td>
+                  <select id="type"
+                    value={this.state.type}
+                    onChange={this.handleChange}>
+                      <option value="Student">Student</option>
+                      <option value="Parent">Parent</option>
+                      <option value="Staff">Staff</option>
+                      <option value="Admin">Admin</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Enabled</td>
+                <td>
+                  <input
+                    id="enabled"
+                    type="checkbox"
+                    checked={this.state.enabled}
+                    onChange={this.handleChange}
+                    />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button className="btn btn-info">{this.props.userData.id ? "Save" : "Add"}</button>
         </form>
       </div>
     )

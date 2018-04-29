@@ -29,7 +29,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS `users` (
   }
 });
 //-----------------------------------------------------
-// GET all Users
+// GET user count
 //-----------------------------------------------------
 $app->get('/users', function(Request $request, Response $response){
   $sql = "SELECT * FROM users";
@@ -38,15 +38,53 @@ $app->get('/users', function(Request $request, Response $response){
     //connect
     $db = $db->connect();
     $stmt = $db->query($sql);
-    $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $users = $stmt->rowCount();
     $db = null;
-    echo json_encode($users);
+      echo '{"Users": {"count": ' . $users . '}}';
 
   } catch(PDOException $e) {
     echo '{"error":{"text":' . $e->getMessage() . '}}';
   }
 });
 
+//-----------------------------------------------------
+// GET user count given username (to check if it exists)
+//-----------------------------------------------------
+$app->get('/user/username/{username}', function(Request $request, Response $response){
+  $username = $request->getAttribute('username');
+  $sql = "SELECT * FROM users WHERE username = '$username'";
+  try {
+    $db = new db();
+    //connect
+    $db = $db->connect();
+    $stmt = $db->query($sql);
+    $users = $stmt->rowCount();
+    $db = null;
+      echo '{"Users": { "username": "' . $username . '", "count": ' . $users . '}}';
+
+  } catch(PDOException $e) {
+    echo '{"error":{"text":' . $e->getMessage() . '}}';
+  }
+});
+//-----------------------------------------------------
+// GET user count given username (to check if it exists)
+//-----------------------------------------------------
+$app->get('/user/email/{email}', function(Request $request, Response $response){
+  $email = $request->getAttribute('email');
+  $sql = "SELECT * FROM users WHERE email = '$email'";
+  try {
+    $db = new db();
+    //connect
+    $db = $db->connect();
+    $stmt = $db->query($sql);
+    $users = $stmt->rowCount();
+    $db = null;
+      echo '{"Users": { "email": "' . $email . '", "count": ' . $users . '}}';
+
+  } catch(PDOException $e) {
+    echo '{"error":{"text":' . $e->getMessage() . '}}';
+  }
+});
 //-----------------------------------------------------
 // GET all Users
 //-----------------------------------------------------

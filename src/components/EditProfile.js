@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './Header';
 import Form from './Form';
 
-import {editUser, getUserById} from '../actions/user';
+import {editUser, getUserById, getUserCountByEmail, getUserCountByUsername} from '../actions/user';
 
 class EditProfile extends React.Component {
   constructor(props){
@@ -11,6 +11,7 @@ class EditProfile extends React.Component {
     this.state = {}
   }
   componentWillMount() {
+    //Getting user info by id, setting it to the state
     const id = this.props.match.params.id;
     getUserById(id).then((response)=>{
       this.setState(()=>({data: response}))
@@ -18,9 +19,23 @@ class EditProfile extends React.Component {
 
   }
   handleEditUser(user){
-    editUser(user).then((response)=>{
-      if(response === 200){
-        this.props.history.push("/");
+    //Check if username is taken, but making sure it doesn't conflict if they don't change it
+    getUserCountByUsername(user.username).then((response)=>{
+      if(response.Users.count > 0 && response.Users.username !== this.state.data.username){
+        window.alert('Username Already Taken!');
+      } else {
+        //If username free, check if email is in use, but making sure it doesn't conflict if they don't change it
+        getUserCountByEmail(user.email).then((response)=>{
+          if(response.Users.count > 0  && response.Users.email !== this.state.data.email){
+            window.alert('Email already in use!');
+          } else {
+            editUser(user).then((response)=>{
+              if(response === 200){
+                this.props.history.push("/");
+              }
+            });
+          }
+        });
       }
     });
   }

@@ -29,7 +29,7 @@ export const editUser = (user) => {
   });
 }
 
-export const getAllUsers = () => {
+export const getUserCount = () => {
   const url = apiUrl + 'users';
   return axios({
     method: 'get',
@@ -41,6 +41,33 @@ export const getAllUsers = () => {
     }
   })
 }
+
+export const getUserCountByEmail = (email) => {
+  const url = apiUrl + 'user/email/' + email;
+  return axios({
+    method: 'get',
+    url,
+    data: {}
+  }).then((response)=>{
+    if(response.status === 200) {
+      return response.data;
+    }
+  })
+}
+
+export const getUserCountByUsername = (username) => {
+  const url = apiUrl + 'user/username/' + username;
+  return axios({
+    method: 'get',
+    url,
+    data: {}
+  }).then((response)=>{
+    if(response.status === 200) {
+      return response.data;
+    }
+  })
+}
+
 export const getUsersByOffset = (offset) => {
   const url = apiUrl + 'users/' + offset;
   return axios({

@@ -32,7 +32,6 @@ class Profile extends React.Component {
     return (
       <div>
       <Header />
-
       <div class="container">
         <h2>{this.state.data.username}</h2>
       <div className="profile">
@@ -64,7 +63,7 @@ class Profile extends React.Component {
       <button className="btn btn-danger"onClick={this.handleDeleteUser}>Delete</button>
       </div>
       </div>
-      </div>
+    </div>
     )
   }
 }

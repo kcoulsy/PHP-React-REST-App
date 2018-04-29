@@ -76,3 +76,23 @@ Add php validation
 Add some styling
 Improve pagination
 Clean up files
+
+###v0.8
+Added basic bootstrap styling
+
+####Todo:
+Look into the REST api, potential sql injection problem.
+Could take react validation further
+Add php validation
+Improve pagination
+Clean up files
+Profile page loading
+
+###v0.9
+Pagination correctly works now - Just needs styling a bit
+Added more React Validation - No longer allows duplicate user or emails
+
+####Todo:
+Look into the REST api, potential sql injection problem.
+Add php validation
+Clean up files

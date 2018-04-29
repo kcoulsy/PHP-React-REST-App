@@ -4,19 +4,24 @@ import Pagination from "react-js-pagination";
 
 import Header from './Header';
 
-import {getAllUsers, getUsersByOffset} from '../actions/user';
+import {getUserCount, getUsersByOffset} from '../actions/user';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      activePage: 1
+      activePage: 1,
+      userCount: 0
    }
    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount() {
+    getUserCount().then((response)=>{
+      const count = response.Users.count;
+      this.setState(()=>({userCount: count}));
+    });
     this.handleGetUsers(0);
   }
   handleGetUsers(offset){
@@ -73,7 +78,7 @@ class Dashboard extends React.Component {
         <Pagination
           activePage={this.state.activePage}
           itemsCountPerPage={10}
-          totalItemsCount={25}
+          totalItemsCount={this.state.userCount}
           pageRangeDisplayed={5}
           onChange={this.handlePageChange}
           innerClass="pagination"

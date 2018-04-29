@@ -52,12 +52,15 @@ $app->get('/users', function(Request $request, Response $response){
 //-----------------------------------------------------
 $app->get('/user/username/{username}', function(Request $request, Response $response){
   $username = $request->getAttribute('username');
-  $sql = "SELECT * FROM users WHERE username = '$username'";
+  $sql = "SELECT * FROM users WHERE username = :username";
+
   try {
     $db = new db();
     //connect
     $db = $db->connect();
-    $stmt = $db->query($sql);
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
     $users = $stmt->rowCount();
     $db = null;
       echo '{"Users": { "username": "' . $username . '", "count": ' . $users . '}}';
@@ -71,12 +74,14 @@ $app->get('/user/username/{username}', function(Request $request, Response $resp
 //-----------------------------------------------------
 $app->get('/user/email/{email}', function(Request $request, Response $response){
   $email = $request->getAttribute('email');
-  $sql = "SELECT * FROM users WHERE email = '$email'";
+  $sql = "SELECT * FROM users WHERE email = :email";
   try {
     $db = new db();
     //connect
     $db = $db->connect();
-    $stmt = $db->query($sql);
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
     $users = $stmt->rowCount();
     $db = null;
       echo '{"Users": { "email": "' . $email . '", "count": ' . $users . '}}';
@@ -90,38 +95,45 @@ $app->get('/user/email/{email}', function(Request $request, Response $response){
 //-----------------------------------------------------
 $app->get('/users/{offset}', function(Request $request, Response $response){
   $offset = $request->getAttribute('offset');
-  $sql = "SELECT * FROM users LIMIT 10 OFFSET $offset";
-  try {
-    $db = new db();
-    //connect
-    $db = $db->connect();
-    $stmt = $db->query($sql);
-    $users = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $db = null;
-    echo json_encode($users);
+  if(is_numeric($offset)){
+    $sql = "SELECT * FROM users LIMIT 10 OFFSET $offset";
+    try {
+      $db = new db();
+      //connect
+      $db = $db->connect();
+      $stmt = $db->query($sql);
+      $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+      $db = null;
+      echo json_encode($users);
 
-  } catch(PDOException $e) {
-    echo '{"error":{"text":' . $e->getMessage() . '}}';
+    } catch(PDOException $e) {
+      echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+  } else {
+    echo '{"error":{"text":"Offset is not a number"}}';
   }
-});
+  });
 //-----------------------------------------------------
 // GET a User given an ID
 //-----------------------------------------------------
 $app->get('/user/{id}', function(Request $request, Response $response){
   $id = $request->getAttribute('id');
+  if(is_numeric($id)){
+    $sql = "SELECT * FROM users WHERE id = $id";
+    try {
+      $db = new db();
+      //connect
+      $db = $db->connect();
+      $stmt = $db->query($sql);
+      $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+      $db = null;
+      echo json_encode($users);
 
-  $sql = "SELECT * FROM users WHERE id = $id";
-  try {
-    $db = new db();
-    //connect
-    $db = $db->connect();
-    $stmt = $db->query($sql);
-    $users = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $db = null;
-    echo json_encode($users);
-
-  } catch(PDOException $e) {
-    echo '{"error":{"text":' . $e->getMessage() . '}}';
+    } catch(PDOException $e) {
+      echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+  } else {
+    echo '{"error":{"text":"ID is not a number"}}';
   }
 });
 
@@ -135,8 +147,7 @@ $app->post('/user/add', function(Request $request, Response $response){
   $email = $request->getParam('email');
   $type = $request->getParam('type');
   $enabled = $request->getParam('enabled');
-  //DO THE BACKEND CHECKS TO MAKE SURE THEY ARE VALID
-  //***********************************
+  
   $sql = "INSERT INTO users (username, first_name, last_name, email, type, enabled)
           VALUES (:username, :first_name, :last_name, :email, :type, :enabled)";
   try {
@@ -175,34 +186,39 @@ $app->put('/user/update/{id}', function(Request $request, Response $response){
   $enabled = $request->getParam('enabled');
   //DO THE BACKEND CHECKS TO MAKE SURE THEY ARE VALID
   //***********************************
-  $sql = "UPDATE users SET
-            username = :username,
-            first_name = :first_name,
-            last_name = :last_name,
-            email = :email,
-            type = :type,
-            enabled = :enabled
-          WHERE id = $id";
-  try {
-    $db = new db();
-    //connect
-    $db = $db->connect();
 
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':first_name', $first_name);
-    $stmt->bindParam(':last_name', $last_name);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':type', $type);
-    $stmt->bindParam(':enabled', $enabled);
+  if(is_numeric($id)){
+    $sql = "UPDATE users SET
+              username = :username,
+              first_name = :first_name,
+              last_name = :last_name,
+              email = :email,
+              type = :type,
+              enabled = :enabled
+            WHERE id = $id";
+    try {
+      $db = new db();
+      //connect
+      $db = $db->connect();
 
-    $stmt->execute();
+      $stmt = $db->prepare($sql);
+      $stmt->bindParam(':username', $username);
+      $stmt->bindParam(':first_name', $first_name);
+      $stmt->bindParam(':last_name', $last_name);
+      $stmt->bindParam(':email', $email);
+      $stmt->bindParam(':type', $type);
+      $stmt->bindParam(':enabled', $enabled);
 
-    $db = null;
-    echo '{"notice": {"text": "User Updated"}}';
+      $stmt->execute();
 
-  } catch(PDOException $e) {
-    echo '{"error":{"text":' . $e->getMessage() . '}}';
+      $db = null;
+      echo '{"notice": {"text": "User Updated"}}';
+
+    } catch(PDOException $e) {
+      echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+  } else {
+    echo '{"error":{"text":"ID is not a number"}}';
   }
 });
 
@@ -211,21 +227,24 @@ $app->put('/user/update/{id}', function(Request $request, Response $response){
 //-----------------------------------------------------
 $app->delete('/user/delete/{id}', function(Request $request, Response $response){
   $id = $request->getAttribute('id');
+  if(is_numeric($id)){
+    $sql = "DELETE FROM users WHERE id = $id";
 
-  $sql = "DELETE FROM users WHERE id = $id";
+    try {
+      $db = new db();
+      //connect
+      $db = $db->connect();
 
-  try {
-    $db = new db();
-    //connect
-    $db = $db->connect();
+      $stmt = $db->prepare($sql);
+      $stmt->execute();
 
-    $stmt = $db->prepare($sql);
-    $stmt->execute();
+      $db = null;
+      echo '{"notice": {"text": "User Deleted"}}';
 
-    $db = null;
-    echo '{"notice": {"text": "User Deleted"}}';
-
-  } catch(PDOException $e) {
-    echo '{"error":{"text":' . $e->getMessage() . '}}';
+    } catch(PDOException $e) {
+      echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+  } else {
+    echo '{"error":{"text":"ID is not a number"}}';
   }
 });

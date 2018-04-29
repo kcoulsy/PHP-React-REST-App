@@ -96,3 +96,12 @@ Added more React Validation - No longer allows duplicate user or emails
 Look into the REST api, potential sql injection problem.
 Add php validation
 Clean up files
+
+###v0.10
+Added security to the user routes in PHP. Fixed some holes in the code allowing SQL injections. 
+-It's not perfect but better than it was previously
+
+####Todo:
+PHP Validation - Should be fine from the front end but probably worth looking at
+Clean up files
+Look into styling Pagination

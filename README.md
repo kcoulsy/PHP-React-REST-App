@@ -1,19 +1,39 @@
 
 ##Installation
+Requires an Apache server as well as a MySQL Server. I suggest Xampp as that's what was used for development
 Extract all files into the htdocs folder on an apache server
-With a MySql server running, head to http://localhost/phpmyadmin and create a new database
-Edit the configuration file to match your database details found at /src/config/db.php.
-(Should be defaulted to Xampps details with a database name of 'Api')
+With a MySql server running, head to http://localhost/phpmyadmin and create a new database called 'API'
+Then run the following SQL query
+
+'CREATE TABLE IF NOT EXISTS `users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(255) NOT NULL ,
+  `first_name` VARCHAR(255) NOT NULL ,
+  `last_name` VARCHAR(255) NOT NULL ,
+  `email` VARCHAR(255) NOT NULL ,
+  `type` VARCHAR(255) NOT NULL ,
+  `enabled` BIT NOT NULL ,
+  PRIMARY KEY (`id`)) ENGINE = InnoDB;'
+
+Edit the configuration file to match your database details found at /src/config/db.php. Although these will be defaulted for Xampp
+
 Everything should be running fine, visit http://localhost/ to view the application.
 
-Click the Init link at the top of the page (next to the Add User).
-On the Init page, click Create MySql Table to setup your database.
-You can also add seed users and clear the database on this page.
+Click the Init link at the top of the page to add seed users and clear the database on this page.
 
 Notes on Installation:
 If the application was to be properly deployed, the index and .htaccess would also go in the public folder.
 Following this a virtual host would have been added to the Apache configuration. This way would more security to the source files.
 I opted not to go this route to purely to simplify Installation. To swap to you would need to reconfigure the includes in PHP as well as the React app and rebuild with Webpack.
+
+I had some issues when testing unbundling on another machine with the .htaccess file. If you need to recreate one use the following setup
+
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
 
 ##Information
 With the simplicity of the task I decided to set myself some goals:
@@ -33,6 +53,7 @@ I found that React Router works very explicitly and initially caused me headache
 To me the whole RESTful API feels exposed without having any authentication, but for simplicity I left it out.
 The application came out as I expected. Although I could've probably gone around Validation a bit better.
 Probably should have made commits a bit more often, but just got focused in at times.
+Something to look at in the future is improving the production bundling in webpack.
 
 ##Changelog:
 
@@ -86,6 +107,9 @@ If no users, display a message.
 Add delete all users option to Init for testing purposes. Along side confirmation alert boxes on all Init options
 Restructured project
 Added notes to README.md
+
+###v0.13
+Removed the create table option from Init, since the page is not accessible before it is created. Instead instructions have been added at the top of the README.md
 
 ####Todo:
 Consider additional PHP Validation - Should be fine from the front end but probably worth looking at.

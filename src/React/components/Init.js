@@ -12,17 +12,6 @@ class AddProfile extends React.Component {
     this.handleAddUsers = this.handleAddUsers.bind(this);
   }
 
-  handleCreateTable() {
-    const url = apiUrl + 'init';
-    axios({
-      method: 'get',
-      url,
-      data: {}
-    }).then((response)=>{
-      window.alert('Database created.');
-    });
-  }
-
   handleAddUsers(user) {
     axios({
       method: 'get',
@@ -60,11 +49,9 @@ class AddProfile extends React.Component {
       <div className="container">
         <h2>Initialization</h2>
         <table className="table">
+
         <tr>
-          <button className="btn btn-info" onClick={this.handleCreateTable}>Create mysql table</button>
-        </tr>
-        <tr>
-          <button className="btn btn-info" onClick={this.handleAddUsers}>Add 10 Users to the database</button>
+          <button className="btn btn-success" onClick={this.handleAddUsers}>Add 10 Users to the database</button>
         </tr>
         <tr>
           <button className="btn btn-info" onClick={this.handleClearUsers}>Erase all users</button>

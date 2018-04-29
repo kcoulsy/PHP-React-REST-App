@@ -56,9 +56,7 @@ class Dashboard extends React.Component {
           <tbody>
           {this.state.data.map((user)=>{
             return (
-
               <tr>
-
                 <th scope="row"><Link to={"/profile/" + user.id} key={user.id}>{user.id}</Link></th>
                 <td>{user.username}</td>
                 <td>{user.first_name}</td>
@@ -66,15 +64,14 @@ class Dashboard extends React.Component {
                 <td>{user.email}</td>
                 <td>{user.type}</td>
                 <td>{user.enabled}</td>
-
               </tr>
-
             )
           })}
+          {this.state.userCount === 0 ? <tr><td colspan="7" className="text-center">No Users found</td></tr> : ""}
           </tbody>
-
       </table>
       </div>
+      <nav aria-label="pagination">
         <Pagination
           activePage={this.state.activePage}
           itemsCountPerPage={10}
@@ -83,7 +80,9 @@ class Dashboard extends React.Component {
           onChange={this.handlePageChange}
           innerClass="pagination"
           itemClass="page-item"
+          linkClass="page-link"
         />
+      </nav>
       </div>
 
       </div>

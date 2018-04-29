@@ -147,7 +147,7 @@ $app->post('/user/add', function(Request $request, Response $response){
   $email = $request->getParam('email');
   $type = $request->getParam('type');
   $enabled = $request->getParam('enabled');
-  
+
   $sql = "INSERT INTO users (username, first_name, last_name, email, type, enabled)
           VALUES (:username, :first_name, :last_name, :email, :type, :enabled)";
   try {
@@ -247,4 +247,27 @@ $app->delete('/user/delete/{id}', function(Request $request, Response $response)
   } else {
     echo '{"error":{"text":"ID is not a number"}}';
   }
+});
+
+//-----------------------------------------------------
+// DELETE all users
+//-----------------------------------------------------
+$app->delete('/users/delete', function(Request $request, Response $response){
+
+    $sql = "DELETE FROM users";
+
+    try {
+      $db = new db();
+      //connect
+      $db = $db->connect();
+
+      $stmt = $db->prepare($sql);
+      $stmt->execute();
+
+      $db = null;
+      echo '{"notice": {"text": "All Users Deleted"}}';
+
+    } catch(PDOException $e) {
+      echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
 });

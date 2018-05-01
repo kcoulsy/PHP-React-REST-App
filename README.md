@@ -6,7 +6,8 @@ With a MySql server running, head to http://localhost/phpmyadmin and create a ne
 
 Then go to http://localhost/init and it should create the users table. Alternatively run the following SQL query
 
-``` CREATE TABLE IF NOT EXISTS `users` (
+``` 
+CREATE TABLE IF NOT EXISTS `users` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(255) NOT NULL ,
   `first_name` VARCHAR(255) NOT NULL ,
@@ -14,7 +15,8 @@ Then go to http://localhost/init and it should create the users table. Alternati
   `email` VARCHAR(255) NOT NULL ,
   `type` VARCHAR(255) NOT NULL ,
   `enabled` BIT NOT NULL ,
-  PRIMARY KEY (`id`)) ENGINE = InnoDB; ```
+  PRIMARY KEY (`id`)) ENGINE = InnoDB; 
+  ```
 
 Edit the configuration file to match your database details found at /src/config/db.php. Although these will be defaulted for Xampp
 

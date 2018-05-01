@@ -6,7 +6,7 @@ With a MySql server running, head to http://localhost/phpmyadmin and create a ne
 
 Then go to http://localhost/init and it should create the users table. Alternatively run the following SQL query
 
-` CREATE TABLE IF NOT EXISTS `users` (
+``` CREATE TABLE IF NOT EXISTS `users` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(255) NOT NULL ,
   `first_name` VARCHAR(255) NOT NULL ,
@@ -14,7 +14,7 @@ Then go to http://localhost/init and it should create the users table. Alternati
   `email` VARCHAR(255) NOT NULL ,
   `type` VARCHAR(255) NOT NULL ,
   `enabled` BIT NOT NULL ,
-  PRIMARY KEY (`id`)) ENGINE = InnoDB; `
+  PRIMARY KEY (`id`)) ENGINE = InnoDB; ```
 
 Edit the configuration file to match your database details found at /src/config/db.php. Although these will be defaulted for Xampp
 
@@ -28,13 +28,13 @@ Following this a virtual host would have been added to the Apache configuration.
 I opted not to go this route to purely to simplify Installation. To swap to you would need to reconfigure the includes in PHP as well as the React app and rebuild with Webpack.
 
 I had some issues when testing unbundling on another machine with the .htaccess file. If you need to recreate one use the following setup
-`
+```
 Options -MultiViews
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
-`
+```
 
 ## Information
 With the simplicity of the task I decided to set myself some goals:
